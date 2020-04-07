@@ -8,9 +8,24 @@ function sleep(milliseconds) {
     }
   }
 }
-
 function match_data(parent_file, children_file) {
   // Code here
+  fs.readFile(parent_file, 'utf8', (err, data) => {
+    sleep(2000)
+    if (err) throw err
+    let parents = JSON.parse(data)
+    fs.readFile(children_file, 'utf8', (err, data) => {
+      sleep(2000)
+      if (err) throw err
+      parents.forEach(parent => {
+        parent.childrens = []
+        JSON.parse(data).forEach(children => {
+          if (children.family === parent.last_name) parent.childrens.push(children.full_name)
+        })
+      })
+      console.log(parents)
+    })
+  })
 }
 
 match_data('./parents.json', './children.json')
