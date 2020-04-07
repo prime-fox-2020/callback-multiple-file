@@ -9,41 +9,31 @@ function sleep(milliseconds) {
   }
 }
 
-function readData(input, cb) {
-  fs.readFile(input, "utf8", function(err, data) {
-    if (err) {
-      cb(err, null);
-    } else {
-      sleep(1000);
-      cb(null, data);
-    }
-  });
-}
-
 function match_data(parent_file, children_file) {
-  readData(parent_file, function(err, data) {
-    if (err) throw err;
-    else {
-      let parent = JSON.parse(data);
-      readData(children_file, function(err, data) {
-        if (err) throw err;
-        else {
-          let children = JSON.parse(data);
-          for (let i = 0; i < parent.length; i++) {
-            if (parent[i].children == undefined) {
-              parent[i].children = [];
-            }
-            for (let j = 0; j < children.length; j++) {
-              if (parent[i].last_name === children[j].family) {
-                parent[i]["children"].push(children[j].full_name);
-              }
-            }
-          }
-          console.log(parent)
-        }
-      });
+  fs.readFile(parent_file, 'utf8', function (err, data) {
+    sleep(5000)
+    if (err) {
+      throw err;
     }
-  });
+    let parent = JSON.parse(data);
+    fs.readFile(children_file, 'utf8', function (err, data) {
+      if (err) {
+        throw err;
+      }
+      let children = JSON.parse(data);
+      for (let i = 0; i < parent.length; i++) {
+        if (parent[i].children == undefined) {
+          parent[i].children = [];
+        }
+        for (let j = 0; j < children.length; j++) {
+          if (parent[i].last_name === children[j].family) {
+            parent[i]["children"].push(children[j].full_name);
+          }
+        }
+      }
+      console.log(parent)
+    })
+  })
 }
 
 match_data("./parents.json", "./children.json");
