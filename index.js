@@ -22,7 +22,6 @@ function match_data(parent_file, children_file,cb) {
           cb(err,null)
         }else{
           let childrenData = JSON.parse(chiData)
-
           for (let i = 0 ; i < parentData.length ; i ++){
             parentData[i].anak = [];
             for (let j = 0; j < childrenData.length; j++) {
@@ -30,8 +29,7 @@ function match_data(parent_file, children_file,cb) {
                 parentData[i].anak.push(childrenData[j].full_name);
               }
             }
-          }
-          
+          }    
           cb(null,parentData)
         }
       }) 
